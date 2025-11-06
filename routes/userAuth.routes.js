@@ -10,17 +10,17 @@ router.post('/user-auth/signup', async (req, res) =>{
     const { name, email, password } = req.body;
     try {
         if (!email || !password || !name) {
-            throw new Error('Missing field');
+            return res.status(400).json({ error: 'Missing field' });
         }
 
         const mail = await User.findOne({ email });
         if (mail) {
-            throw new Error('Email already in use');
+            return res.status(409).json({ error: 'Email already in use' });
         }
 
         const user = await User.findOne({ name });
         if (user) {
-            throw new Error('Username already exists');
+            return res.status(409).json({ error: 'Username already exists' });
         }
 
         const salt = await bcrypt.genSalt(10);
@@ -35,9 +35,9 @@ router.post('/user-auth/signup', async (req, res) =>{
         res.status(201).json({
             name: newUser.name
         });
-        
+
     } catch (error) {
-        res.status(500).json({ msg: 'Error while creating user', error: error.message || error })
+        res.status(500).json({ error: error.message || 'Error while creating user' })
     }
 });
 
@@ -45,15 +45,19 @@ router.post('/user-auth/signup', async (req, res) =>{
 router.post('/user-auth/login', async (req, res) => {
     const { email, password } = req.body;
     try {
+        if (!email || !password) {
+            return res.status(400).json({ error: 'Missing email or password' });
+        }
+
         const user = await User.findOne({ email });
 
         if (!user) {
-            throw new Error('Email not found, please digit a valid email')
+            return res.status(404).json({ error: 'Email not found, please enter a valid email' });
         }
 
         const compareHash = bcrypt.compareSync(password, user.passwordHash);
         if (!compareHash) {
-            throw new Error('Email or password incorrect')
+            return res.status(401).json({ error: 'Email or password incorrect' });
         }
 
         const payload = {
@@ -68,9 +72,9 @@ router.post('/user-auth/login', async (req, res) => {
             { expiresIn: '1day' }
         );
         res.status(200).json({ msg: payload, token });
-        
+
     } catch (error) {
-        res.status(500).json({ message: 'Error trying to login', error: error.message || error });
+        res.status(500).json({ error: error.message || 'Error trying to login' });
     }
 });
 
