@@ -23,9 +23,8 @@ router.post('/my-list/:productId', async(req, res) => {
     
     try {
         const list = await MyList.findOne({ user_id: id });
-        //console.log('list', list);
         const findId = list.products.includes(productId);
-        //console.log('find id', findId);
+       
         if(findId){
             res.status(400).json({ message: 'product already added in your Favorites List'});
             return;

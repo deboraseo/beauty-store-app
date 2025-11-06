@@ -5,15 +5,25 @@
 // const Product = require('../models/Product');
 
 // const seed = async() => {
-//     const connect = await mongoose.connect(process.env.MONGO_URI, {
-//         useNewUrlParser: true,
-//         useUnifiedTopology: true
-//     });
+//     try {
+//         const connect = await mongoose.connect(process.env.MONGO_URI, {
+//             useNewUrlParser: true,
+//             useUnifiedTopology: true
+//         });
 
-//     data.map(async (product) => await Product.create(product));
-//     connect.disconnect(); //colocar so qdo terminar para desconectar e rodar mais uma vez
+//         await Product.deleteMany({});
+//         await Product.insertMany(data);
+//         await connect.disconnect();
+//     } catch (error) {
+//         console.error('Error seeding database:', error);
+//         process.exit(1);
+//     }
 // };
 
 // seed();
+
+// IMPORTANT: Uncomment the code above to seed the database
+// This will DELETE all existing products and insert new ones
+// Use only when setting up the database for the first time
 
 

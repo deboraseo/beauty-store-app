@@ -5,7 +5,6 @@ const connectDB = async () => {
         useNewUrlParser: true,
         useUnifiedTopology: true
     });
-    console.log(`Connected to Mongo! Database name: ${connect.connections[0].name}`)
 };
 
 module.exports = connectDB;

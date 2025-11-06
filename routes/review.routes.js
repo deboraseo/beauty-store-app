@@ -9,13 +9,12 @@ router.post('/review/:productId', async(req, res) => {
     const { productId } = req.params;
     const { id } = req.user;
     const { review } = req.body;
-    //console.log('req.body', req.body);
+ 
 
     try {
         const newReview = { review, product_id: productId, user_id: id };
-        //console.log(newReview);
+        
         const reviewCreated = await Review.create(newReview);
-        //console.log(reviewCreated);
         
         await Product.findByIdAndUpdate(productId, { $push: { reviews: reviewCreated._id }}, { new: true });
         res.status(201).json(reviewCreated);
@@ -31,7 +30,6 @@ router.post('/review/:productId', async(req, res) => {
 
 //     try {
 //         const reviews = await Review.find({ product_id: productId});
-//         //console.log('reviews', reviews);
 //         res.status(200).json(reviews);
 //     } catch (error) {
 //         res.status(500).json({ message: 'Error trying to get reviews', error });

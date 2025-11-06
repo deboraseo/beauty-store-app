@@ -10,10 +10,9 @@ router.get('/cart', async (req, res) => {
 
     try {
         const cart = await Cart.findOne({ user_id: id }).populate({ path:'products', populate: { path: 'product_id' }});
-        console.log('this is Cart routes', cart);
+
         res.status(200).json(cart);
     } catch (error) {
-        console.log(error);
         res.status(500).json(error);
     }
 });
@@ -24,14 +23,13 @@ router.post('/cart/:productId', async (req, res) => {
     const { productId } = req.params;
     const { id } = req.user;
     const { qty } = req.body;
-    //console.log('req.body', req.body);
+
     try {
         const cart = await Cart.findOne({ user_id: id });
         
         //----se nao achar Cart!!-----
         if(!cart) {
             const newcart = await Cart.create({ user_id: id });
-            //console.log('newcart', newcart);
 
             const payload = {
                 product_id: productId,
@@ -39,7 +37,7 @@ router.post('/cart/:productId', async (req, res) => {
                 qty
             }
             const productCart = await CartProduct.create(payload);
-            //console.log('productCart', productCart);
+            
             const updatedCart = await Cart.findByIdAndUpdate(newcart._id, { $push: { products: productCart._id } }, { new: true });
             res.status(201).json(updatedCart);
 
@@ -59,7 +57,6 @@ router.post('/cart/:productId', async (req, res) => {
                 }
     
                 const prodCart = await CartProduct.create(payload);
-                //console.log('productCart', prodCart);
     
                 const updCart = await Cart.findByIdAndUpdate(cart._id, { $push: { products: prodCart._id } }, { new: true });
                 res.status(201).json(updCart);
@@ -76,7 +73,7 @@ router.put('/cart/:productId', async (req,res) => {
     const { id } = req.user;
     const { qty } = req.body;
     const { productId } = req.params;
-    //console.log('qty', qty);
+
     try {
         const cart = await Cart.find({ user_id: id });
         const product = await CartProduct.findOneAndUpdate({ product_id: productId}, { qty }, { new: true });
@@ -119,10 +116,8 @@ router.delete('/cart/:productId', async (req, res) => {
     try {
         //procurar id do Cart 
         const cart = await Cart.findOne({ user_id: id });
-        console.log('this is cart', cart);
         //procurar id do CartProduct que quero deletar
         const prodCart = await CartProduct.findOne({ cart_id: cart._id, product_id: productId });
-        console.log('prodCart', prodCart);
 
         //remover em Cart(Array)
         await Cart.findByIdAndUpdate(cart._id, { $pull: { products:  prodCart._id }  }, { new: true } );
@@ -142,7 +137,6 @@ router.delete('/cart-all-products', async (req, res) => {
     
     try {
         const cart = await Cart.findOne({ user_id: id });
-        console.log('cart delete', cart)
         //deletar todos os CartProduct
         await CartProduct.deleteMany({ cart_id: cart._id });
 

@@ -38,7 +38,7 @@ router.post('/poduct/many', async (req, res) => {
         }
 
         const newProducts =  await Product.create(payload);
-        //console.log('new products array', newProducts);
+       
         res.status(201).json(newProducts);
     } catch(error) {
         res.status(500).json({ msg: 'Error while creating products', error });
@@ -49,7 +49,7 @@ router.post('/poduct/many', async (req, res) => {
 //adicionar imagem do cloudinary
 router.put('/product/upload-image/:productId', uploadImage.single('image'), async(req, res) => {
     const { path } = req.file
-    //console.log('req.file', req.file);
+
     const { productId } = req.params;
     const { id } = req.user;
 

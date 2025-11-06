@@ -28,7 +28,6 @@ router.post('/admin-auth/signup', async (req, res) => {
         res.status(201).json({
             name: newAdmin.name
         });
-        //console.log('new admin', newAdmin);
     } catch(error) {
         res.status(500).json({ msg: 'Error while creating admin', error})
     }
@@ -39,7 +38,7 @@ router.post('/admin-auth/login', async (req, res) => {
     const { name, password } = req.body;
     try {
         const user = await Admin.findOne({ name });
-        //console.log('user', user);
+  
         if (!user) {
             throw new Error('username not found');
         }

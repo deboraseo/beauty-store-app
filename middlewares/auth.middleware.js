@@ -16,9 +16,9 @@ const auth = (req, res, next) => {
             tokenWithoutBearer,
             process.env.SECRET_JWT
         )
-        console.log(decodedToken);
+
         req.user = { ...decodedToken }
-        console.log('req.user', req.user);
+
         next();
     } catch(error) {
         res.status(401).json({ message: 'Unauthorized' });
