@@ -86,14 +86,9 @@ The API will be running at `http://localhost:3001`
 
 ## 📄 License & Copyright
 
-**Copyright © 2021-2025 Debora Seo. All Rights Reserved.**
-
-This project is part of a personal portfolio and was created as a final project during the Ironhack Web Development Bootcamp in 2021.
-
 ⚠️ **Important Notice:**
 - This code is available for **viewing and educational purposes only**
 - **Copying, modifying, or using this code** for commercial or personal projects **without explicit permission is prohibited**
-- This is proprietary software protected by copyright law
 - For usage permissions or inquiries, please contact the repository owner
 
 ## 👥 Contact
